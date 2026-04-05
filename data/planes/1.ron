@@ -1,0 +1,6 @@
+Plane(
+    mtom: 4.5,
+    predicted_payload: 5,
+    span: 34.5,
+    n_motors: 2,
+)
