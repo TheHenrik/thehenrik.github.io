@@ -6,5 +6,5 @@ pub struct Team {
     pub name: String,
     pub uni: String,
     pub country: String,
-    pub flag: String
+    pub flag: String,
 }

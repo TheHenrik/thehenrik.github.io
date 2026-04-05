@@ -1,19 +1,14 @@
 use anyhow::{Context, Result};
+use csv::{ReaderBuilder, WriterBuilder};
 use serde::{Serialize, de::DeserializeOwned};
 use std::path::Path;
-use csv::{ReaderBuilder, WriterBuilder};
 pub mod teams;
 
 use teams::Team;
 
-
-
 pub struct Competition {
     teams: Vec<Team>,
-
-
 }
-
 
 /// Load all records from a CSV file.
 ///
@@ -24,13 +19,11 @@ pub fn load_csv<T>(path: &Path) -> Result<Vec<T>>
 where
     T: serde::de::DeserializeOwned,
 {
-    let mut rdr = ReaderBuilder::new()
+    ReaderBuilder::new()
         .has_headers(true)
         .from_path(path)
-        .with_context(|| format!("Failed to open CSV file: {}", path.display()))?;
-
-    // Using collect on the iterator yields Result<Vec<T>, csv::Error>
-    rdr.deserialize::<T>()
+        .with_context(|| format!("Failed to open CSV file: {}", path.display()))?
+        .deserialize::<T>()
         .collect::<Result<Vec<T>, _>>()
         .context("Failed to deserialize CSV rows into target type")
 }
@@ -55,13 +48,7 @@ where
     }
 
     // Flush ensures the internal buffer is written to the OS.
-    wtr.flush()
-        .context("Failed to flush CSV writer")?;
-
-    // Check for any underlying write errors that may have shown up after flush.
-    if let Some(e) = wtr.error() {
-        return Err(e).context("Error while writing CSV");
-    }
+    wtr.flush().context("Failed to flush CSV writer")?;
 
     Ok(())
 }
