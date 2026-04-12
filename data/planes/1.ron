@@ -1,4 +1,5 @@
 Plane(
+    team_id: 1,
     mtom: 4.5,
     predicted_payload: 5,
     span: 34.5,
